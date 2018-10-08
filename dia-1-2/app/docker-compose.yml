@@ -1,0 +1,72 @@
+# Versão 2 do Docker-Compose
+version: '2'
+
+services:
+    
+    nginx:
+        restart: "always"
+        image: registry.rancher.signallink.us/{user}/nginx
+        ports:
+            - "80:80"
+        links:
+            # Colocar mais nós para escalar
+            - node
+            # - node-2
+            
+    redis:
+        restart: "always"
+        image: registry.rancher.signallink.us/{user}/redis
+        ports:
+            - 6379
+
+    mysql:
+        restart: "always"
+        image: mysql:latest
+        ports:
+            - 3306
+        environment:
+            MYSQL_ROOT_PASSWORD: 123
+            MYSQL_DATABASE: books
+            MYSQL_USER: apitreinamento
+            MYSQL_PASSWORD: 123 
+    
+    # Projeto de BACKUP em andamento
+    # backup: 
+        # build: ./backup
+        # links: 
+            # - redis
+            # - mariadb
+        # ports:
+            # - 80
+    
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    # Adicionar mais nós para escalar
+
+    node:
+        restart: "always"
+        image: registry.rancher.signallink.us/{user}/node
+        links:
+            - redis
+            - mysql
+        ports:
+            - 8080
+        volumes:
+            -  volumeteste:/tmp/volumeteste
+    # node-2:
+        # restart: "always"
+        # image: registry.rancher.tesla-ads.com/jonathan/node
+        # links:
+            # - redis
+            # - mysql
+        # ports:
+            # - 8080
+        # volumes:
+            # -  volumeteste:/tmp/volumeteste
+    
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+# Mapeamento dos volumes
+volumes:
+    volumeteste:
+        external: false
+
