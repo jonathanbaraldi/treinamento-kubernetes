@@ -4,11 +4,11 @@ Registro
 	registry.rancher.tesla-ads.com
 
 Por usuario
-	rancher.<user>.treinamento.tesla-ads.com
-	traefik.<user>.treinamento.tesla-ads.com
-	graylog.<user>.treinamento.tesla-ads.com
-	grafana.<user>.treinamento.tesla-ads.com
-	app.<user>.treinamento.tesla-ads.com
+	rancher.<user>.signallink.us
+	traefik.rancher.<user>.rancher.jonathan.signallink.us
+	graylog.rancher.<user>.rancher.jonathan.signallink.us
+	grafana.rancher.<user>.rancher.jonathan.signallink.us
+	app.rancher<user>.rancher.jonathan.signallink.us
 
 	<user>.treinamento.tesla-ads.com
 	
@@ -46,8 +46,8 @@ Jonathan
 	B = instrutor2.rancher.firecall.us (189.84.130.19)
 	C = instrutor3.rancher.firecall.us (189.84.130.20)
 	D = instrutor4.rancher.firecall.us (189.84.130.21)
-		ssh -i brcloud-dc.pem root@189.84.130.18
 
+		ssh -i brcloud-dc.pem root@189.84.130.18
 		ssh -i brcloud-dc.pem root@189.84.130.19
 		ssh -i brcloud-dc.pem root@189.84.130.20
 		ssh -i brcloud-dc.pem root@189.84.130.21
