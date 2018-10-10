@@ -21,7 +21,7 @@ services:
 
     mysql:
         restart: "always"
-        image: mysql:latest
+        image: z
         ports:
             - 3306
         environment:
