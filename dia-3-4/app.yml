@@ -39,9 +39,9 @@ subjects:
 - kind: Group
   name: system:serviceaccounts
   apiGroup: rbac.authorization.k8s.io
-# - kind: ServiceAccount
-  # name: logs
-  # namespace: kube-system
+- kind: ServiceAccount
+  name: logs
+  namespace: kube-system
 
 
 
@@ -75,7 +75,7 @@ spec:
       serviceAccount: logs
       containers:
       - name: whoami5
-        image: registry.rancher.signallink.us/{user}/whoami
+        image: registry.rancher.signallink.us/jonathan/whoami
         env:
         - name: PASS
           value: "jon"
@@ -113,7 +113,7 @@ metadata:
 
 spec:
   rules:
-  - host: app.jonathan.rancher.tesla-ads.com
+  - host: app.rancher.instrutor.signallink.us
     http:
       paths:
         - path: /

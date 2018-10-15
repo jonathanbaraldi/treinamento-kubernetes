@@ -174,7 +174,7 @@ spec:
       containers:
       - env:
         - name: GRAYLOG_WEB_ENDPOINT_URI
-          value: http://graylog.{user}.rancher.tesla-ads.com/api
+          value: http://graylog.rancher.instrutor.signallink.us/api
         - name: GRAYLOG_ELASTICSEARCH_HOSTS
           value: "http://elasticsearch.kube-system.svc.cluster.local:9200"
         - name: ELASTICSEARCH_DISCOVERY_ZEN_PING_MULTICAST_ENABLED
@@ -231,7 +231,7 @@ metadata:
     allow.http: "false"
 spec:
   rules:
-  - host: graylog.{user}.rancher.tesla-ads.com
+  - host: graylog.rancher.instrutor.signallink.us
     http:
       paths:
         - path: /

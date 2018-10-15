@@ -232,3 +232,12 @@ Com o kubectl instalado, pegar as credenciais de acesso no Rancher e configurar 
 $ vi ~/.kube/config
 $ kubectl get nodes
 ```
+
+
+
+
+
+
+
+
+docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kubernetes:/etc/kubernetes -v /var/run:/var/run rancher/rancher-agent:v2.0.8 --server https://189.84.130.21 --token sz6cmqr9n94qsl26vz8ztcs6nstdmschpwxp6pplg6vhfzkqg99jk7 --ca-checksum 63f3971e273fb1ffe92c79213584e73c9d54cd035ff881e40332e4c38861ca35 --etcd --controlplane --worker
