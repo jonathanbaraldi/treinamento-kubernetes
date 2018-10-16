@@ -62,37 +62,44 @@ Para colocar o kubernetes para fazer backup. Editar o arquivo YML com a configur
 
 Localizar o item do ETCD, setar o snapshot para true, definir o tempo de criação em 15 minutos, e o período de retencão, que será de 24 horas.
 
+```sh
 etcd:
     snapshot: true # enables recurring etcd snapshots
     creation: "15m" # time increment between snapshots
     retention: "24h" # time increment before snapshot purge
+```
 
 Após fazer as alterações, é preciso salvar e verificar se as mesmas foram salvas, abrindo novamente o arquivo de configuração.
 
 Com as alterações feitas, iremos localizar o diretório onde está sendo feito o backup. Ele estará na host onde foi alocado o etcd-1 do kubernetes.
 
 Localizar o diretório do backup.
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	/opt/rke/etcd-snapshots.
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+```sh
+$	/opt/rke/etcd-snapshots
+```
+
+### DR Kubernetes - Restore
 
 Agora iremos transferir para a máquina de destino o backup que iremos restaurar. 
 
 Logar na máquina de destino, criar o diretório e dar permissão:
-# mkdir -p /opt/rke/
-# mkdir -p /opt/rke/etcd-snapshots/
-# chmod -R 777 /opt/rke/etcd-snapshots/
-
+```sh
+$ mkdir -p /opt/rke/
+$ mkdir -p /opt/rke/etcd-snapshots/
+$ chmod -R 777 /opt/rke/etcd-snapshots/
+```
 
 Copiar o backup para a outra máquina, host D
 
+```sh
 scp -i rancher.pem /opt/rke/etcd-snapshots/2018-10-02T19:12:51Z_etcd linux@186.200.35.150:/opt/rke/etcd-snapshots/2018-10-02T19:12:51Z_etcd
 
 scp -i rancher.pem /opt/rke/etcd-snapshots/pki.bundle.tar.gz linux@186.200.35.150:/opt/rke/etcd-snapshots/pki.bundle.tar.gz
-
+```
 
 Criar o arquivo cluster.yml
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+```sh
 nodes:
     - address: 201.166.145.161
       user: linux
@@ -100,38 +107,40 @@ nodes:
         - controlplane
         - etcd
         - worker
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+```
 
 Adicionar a chave do usuário linux para .ssh/id_rsa, para que o usuário possa se logar e rodar o docker.
 
-#vi .ssh/id_rsa
-# chmod 600 .ssh/id_rsa 
-# ssh linux@186.200.35.150
+```sh
+$ vi .ssh/id_rsa
+$ chmod 600 .ssh/id_rsa 
+$ ssh linux@186.200.35.150
+```
 
 Atualizar o OPENSSH
 
-# yum update -y
-# yum install update
-# yum update openssh
+```sh
+$ yum update -y
+$ yum install update
+$ yum update openssh
+```
 
 Instalar o RKE
 
-# wget https://github.com/rancher/rke/releases/download/v0.1.9/rke_linux-amd64
-# mv rke_linux-amd64 rke
-# chmod +x rke
+```sh
+$ wget https://github.com/rancher/rke/releases/download/v0.1.9/rke_linux-amd64
+$ mv rke_linux-amd64 rke
+$ chmod +x rke
+```
 
 Rodar o comando de restaurar o ETCD
 
-./rke etcd snapshot-restore --name 2018-10-02T19:12:51Z_etcd --config cluster.yml
+```sh
+$ ./rke etcd snapshot-restore --name 2018-10-02T19:12:51Z_etcd --config cluster.yml
+```
 
 
 Ir no Rancher no console e lançar novo cluster com ETCD restaurado
-
-
-
-
-
-
 
 
 Backup
