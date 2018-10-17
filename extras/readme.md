@@ -57,15 +57,15 @@ $ kubectl apply -f volume.yml
 
 Criar a chave randômica que iremos usar.
 
+```sh
 $ head -c 32 /dev/urandom | base64
+```
 
 Criar o ARQUIVO encryption usando a chave no campo secret.
-
 
 Esse arquivo deverá ser colocado no MASTER do RANCHER, e não onde está rodando o MASTER do kubernetes.
 
 Adicionar o seguinte código ao YML do cluster kubernetes:
-
 
 ```sh
 services:
@@ -75,7 +75,9 @@ services:
 ```
 Com isso o kubernetes irá se atualizar e poderemos criar nossos secrets.
 
+```sh
 $ kubectl create secret generic secret1 -n default --from-literal=mykey=mydata
+```
 
 Acabamos de criar o secret, agora iremos verificar se ele está criptografado no banco.
 
@@ -83,11 +85,9 @@ Para isso, temos que estar no terminal da máquina onde está o master do etcd.
 
 Iremos entrar dentro do container do etcd
 
+```sh
 $ docker exec -it etcd /bin/sh
-
-
-
-
+```
 
 
 https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#before-you-begin
