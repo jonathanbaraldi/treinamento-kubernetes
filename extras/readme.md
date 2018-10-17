@@ -65,13 +65,15 @@ Criar o ARQUIVO encryption usando a chave no campo secret.
 
 Esse arquivo deverá ser colocado no MASTER do RANCHER, e não onde está rodando o MASTER do kubernetes.
 
-Adicionar o seguinte código ao YML do cluster kubernetes:
+Adicionar o seguinte código ao YML do cluster kubernetes, no caminho:
+
+**/etc/kubernetes/**
 
 ```sh
 services:
     kube-api:
       extra_args:
-        experimental-encryption-provider-config: "/config.yml" 
+        experimental-encryption-provider-config: "/etc/kubernetes/encryption.yml" 
 ```
 Com isso o kubernetes irá se atualizar e poderemos criar nossos secrets.
 
@@ -87,39 +89,8 @@ Iremos entrar dentro do container do etcd
 
 ```sh
 $ docker exec -it etcd /bin/sh
+$ etcdctl get /registry/secrets/default/secret1 | hexdump -C
 ```
 
 
-https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#before-you-begin
-
-
-
-
-VOLUME
-
-https://rancher.com/project-longhorn-now-available-kubernetes/
-
-INstalação do Longhorn a partir do catálogo e uso dele,  fazer exemplo.
-
-
-
-
-- Volume - 
-- Exercício de criptografia
-
-
-
-Ver o do autoscaling - 
-- Autoscaling - metrics server's.
-
-
-
-
-
-
-- RESTORE DO KUBERNETES
-- RANCHER HA
-
-- AUTOSCALING
-- VOLUME
 
