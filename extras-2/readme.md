@@ -3,13 +3,16 @@
 ### Declarar políticas de rede
 
 https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/
+
 https://github.com/ahmetb/kubernetes-network-policy-recipes
+
 https://ahmet.im/blog/kubernetes-network-policy/
 
 Para ver como funciona as policies de rede do kubernetes, iremos criar um deployment do nginx e expor ele via serviço.
 
 ```sh
-$ kubectl run php-apache --image=k8s.gcr.io/hpa-example --requests=cpu=200m --expose --port=80$ kubectl run nginx --image=nginx --replicas=2
+$ kubectl run php-apache --image=k8s.gcr.io/hpa-example --requests=cpu=200m --expose --port=80
+$ kubectl run nginx --image=nginx --replicas=2
 	deployment.apps/nginx created
 $ kubectl expose deployment nginx --port=80
 	service/nginx exposed
