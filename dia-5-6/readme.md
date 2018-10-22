@@ -129,12 +129,6 @@ $ cp -av /root/.ssh /home/rke && chown rke. -R /home/rke/.ssh
 
 
 
-su - rke
-ssh-keygen
-
-
-
-
 
 ```sh
 $ adduser jonathan
@@ -232,16 +226,70 @@ $ rm -rf /etc/ceph /etc/cni /etc/kubernetes /opt/cni /opt/rke /run/secrets/kuber
 $ systemctl start docker
 ```
 
+Iremos criar o usuario na máquina de destino, o nosso host A. 
 
-Iremos usar as mesmas máquinas do exercício anterior, onde temos o usuário para o ssh e o RKE instalados.
+```sh
+$ adduser rancher
+$ su rancher
+$ cd ~/
+$ ssh-keygen
+```
+
+Foram criadas as chaves públicas e privadas no diretório  **/home/rancher/.ssh/**
+```sh
+$ cp /home/rancher/.ssh/id_rsa.pub /home/rancher/.ssh/authorized_keys
+$ exit
+```
+Virar sudo e adicionar o usuario ao grupo do docker.
+```sh
+$ usermod -aG docker rancher
+```
+
+Editar o arquivo  **/etc/ssh/sshd_config**, e alterar os parâmetros:
+
+- PasswordAuthentication no
+```sh
+$ vi /etc/ssh/sshd_config
+$ service sshd restart
+````
+
+Iremos pegar a chave privada que foi criada para o usuário, e adicionar ela nas chaves da máquina de onde iremos rodar os comandos do restore pelo RKE.
+
+Iremos copiar ela, pela tela mesmo.
+```sh
+$ cat /home/rancher/.ssh/id_rsa
+```
+
+E adicionar a chave do usuário linux para **.ssh/id_rsa**, para que o usuário possa se logar e rodar o docker.
+Logado na máquina onde iremos rodar os comandos, colar a chave.
+
+```sh
+$ adduser rancher
+$ su rancher
+$ cd ~/
+
+$ vi /home/rancher/.ssh/id_rsa
+$ chmod 600 /home/rancher/.ssh/id_rsa 
+$ ssh rancher@189.84.130.18
+$ exit
+```
+Para ter finalizado com sucesso, acessamos o terminal da máquina de destino.
+
 
 Criar o arquivo rancher-cluster.yml
+
+
 ```sh
+$ cd /home/rke
+
+$ vi rancher-cluster.yml
+
 nodes:
-  - address: 189.84.130.21
+  - address: 189.84.130.18
     # internal_address: 172.16.22.12
-    user: jonathan
+    user: rancher
     role: [controlplane,worker,etcd]
+    ssh_key_path: /home/rancher/.ssh/id_rsa 
   #- address: 165.227.116.167
     #internal_address: 172.16.32.37
     #user: ubuntu
@@ -250,7 +298,6 @@ nodes:
     #internal_address: 172.16.42.73
     #user: ubuntu
     #role: [controlplane,worker,etcd]
-
 services:
   etcd:
     snapshot: true
@@ -266,12 +313,12 @@ Iremos acompanhar o deployment de todo Rancher e do cluster Kubernetes do Ranche
 
 Ao término, o RKE deverá ter gerado o arquivo **kube_config_rancher-cluster.yml** , que contém as configurações do 
 
-
 Se pegarmos este arquivo, e usarmos na instância onde instalamos o kubectl, podemos rodar os comandos no cluster.
 
 Com o cluster rodando, iremos para o próximo passo que é instalar o Helm.
 
 ```sh
+$ cd /home
 $ wget https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-linux-amd64.tar.gz
 $ tar -xvf helm-v2.11.0-linux-amd64.tar.gz
 $ cd linux-amd64
