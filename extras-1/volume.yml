@@ -27,6 +27,10 @@ spec:
         - name: logs
           mountPath: /opt/kubernetes
       volumes:
+      # - name: logs
+        # hostPath:
+         # path: /opt/kubernetes
       - name: logs
-        hostPath:
-          path: /opt/kubernetes
+        nfs: 
+          path: /tmp 
+          server: 172.17.0.2 

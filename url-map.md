@@ -1,3 +1,12 @@
+
+
+* Corrigir a documentação
+* Adicionar novos exercícios
+* Fazer Rancher HA
+
+
+
+
 url-map.md
 
 Registro

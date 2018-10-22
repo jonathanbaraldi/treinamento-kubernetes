@@ -1,7 +1,4 @@
-
-
-
-# Extra 1
+# Extras 1
 
 ### Autoscaling
 

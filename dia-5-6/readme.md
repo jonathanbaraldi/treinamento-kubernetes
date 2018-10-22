@@ -121,6 +121,21 @@ Criação do usuário
 
 Iremos logar na máquina de destino do restore, e criar o usuário que será usado pelo RKE para fazer o restore do Kubernetes.
 
+
+```sh
+$ useradd -g docker rke
+$ cp -av /root/.ssh /home/rke && chown rke. -R /home/rke/.ssh
+```
+
+
+
+su - rke
+ssh-keygen
+
+
+
+
+
 ```sh
 $ adduser jonathan
 $ su jonathan
@@ -139,7 +154,7 @@ $ usermod -aG docker jonathan
 ```
 
 Editar o arquivo  **/etc/ssh/sshd_config**, e alterar os parâmetros:
-- PermitRootLogin no
+
 - PasswordAuthentication no
 ```sh
 $ vi /etc/ssh/sshd_config
